@@ -1,52 +1,59 @@
 plugins {
-    id "groovy"
-    id "com.microsoft.azure.azurefunctions" version "1.4.0"
-    id "io.micronaut.application" version '1.0.3'
+    id("groovy")
+    id("com.microsoft.azure.azurefunctions") version "1.12.1"
+    id("io.micronaut.application") version "3.7.10"
 }
 
-version "0.1"
-group "com.example"
+version = "0.1"
+group = "com.example"
 
 repositories {
     mavenCentral()
-    jcenter()
-}
-
-micronaut {
-    runtime "azure_function"
-    testRuntime "spock2"
-    processing {
-        incremental false
-        annotations "com.example.*"
-    }
 }
 
 dependencies {
     implementation("io.micronaut:micronaut-validation")
-    implementation("io.micronaut:micronaut-runtime")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    testImplementation("io.micronaut:micronaut-http-client")
-    implementation "io.micronaut.azure:micronaut-azure-function-http:2.0.2"
-    implementation "io.micronaut.azure:micronaut-azure-function:2.0.2"
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("io.micronaut.azure:micronaut-azure-function-http")
 
-    testImplementation("io.micronaut.azure:micronaut-azure-function-http-test:2.0.2")
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    testImplementation("io.micronaut:micronaut-http-client")
+    implementation("com.microsoft.azure.functions:azure-functions-java-library")
+    implementation("io.micronaut.azure:micronaut-azure-function")
+    testImplementation("io.micronaut.azure:micronaut-azure-function-http-test")
 }
 
-mainClassName = "com.example.Application"
-
+application {
+    mainClass.set("com.example.Application")
+}
 java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
-    targetCompatibility = JavaVersion.toVersion('1.8')
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+tasks {
+}
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("azure_function")
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("com.example.*")
+    }
 }
 
 
 azurefunctions {
-    resourceGroup = 'linuxexamplemicronaut'
-    appName = 'micronautest'
-    pricingTier = 'Consumption'
-    region = 'westus'
+    resourceGroup = "micronautresourcegroup"
+    appName = "timsmicronauthttptrigger"
+    pricingTier = "Consumption"
+    region = "westus"
     runtime {
-      os = 'linux'
+        os = "linux"
+        javaVersion = "Java 17"
     }
     localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
 }

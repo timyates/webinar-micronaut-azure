@@ -1,9 +1,12 @@
 package com.example;
 
+import com.microsoft.azure.functions.ExecutionContext;
 import io.micronaut.http.annotation.*;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.MediaType;
 import io.micronaut.core.annotation.Introspected;
+
+import java.util.logging.Level;
 
 @Controller("/demo")
 public class DemoController {
@@ -15,8 +18,9 @@ public class DemoController {
     }
 
     @Post
-    public SampleReturnMessage postMethod(@Body SampleInputMessage inputMessage){
+    public SampleReturnMessage postMethod(@Body SampleInputMessage inputMessage, ExecutionContext context) {
       SampleReturnMessage retMessage = new SampleReturnMessage();
+      context.getLogger().info("Hello " + inputMessage.getName() + ", thank you for sending the message");
       retMessage.setReturnMessage("Hello " + inputMessage.getName() + ", thank you for sending the message");
       return retMessage;
     }
