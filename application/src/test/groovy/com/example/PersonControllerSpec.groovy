@@ -1,8 +1,8 @@
 package com.example
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.microsoft.azure.functions.HttpResponseMessage
 import com.microsoft.azure.functions.HttpStatus
-import io.micronaut.azure.function.http.HttpRequestMessageBuilder
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.MediaType
@@ -20,23 +20,22 @@ class PersonControllerSpec extends Specification {
 
         when:
         Person person = new Person("sergio")
-        HttpRequestMessageBuilder.AzureHttpResponseMessage response = postPerson(person)
+        HttpResponseMessage response = postPerson(person)
 
         then: "The response is correct"
         response.status == HttpStatus.OK
-        response.bodyAsString ==
-                objectMapper.writeValueAsString(new Person("SERGIO"))
+        response.body == objectMapper.writeValueAsString(new Person("SERGIO"))
     }
 
     void "invalid person triggers bad request"() {
         when:
-        HttpRequestMessageBuilder.AzureHttpResponseMessage response = postPerson(new Person())
+        HttpResponseMessage response = postPerson(new Person())
 
         then:
         response.status == HttpStatus.BAD_REQUEST
     }
 
-    HttpRequestMessageBuilder.AzureHttpResponseMessage postPerson(Person person) {
+    HttpResponseMessage postPerson(Person person) {
         function.request(HttpMethod.POST, "/person")
                 .body(person)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)

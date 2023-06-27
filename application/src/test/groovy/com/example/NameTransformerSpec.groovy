@@ -1,10 +1,10 @@
 package com.example
 
+import jakarta.validation.ConstraintViolationException
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.validation.ConstraintViolationException
 
 class NameTransformerSpec extends Specification {
 

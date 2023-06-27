@@ -19,6 +19,7 @@ dependencies {
     implementation("io.micronaut.azure:micronaut-azure-function-http")
 
     runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.yaml:snakeyaml")
 
     testImplementation("io.micronaut:micronaut-http-client")
     implementation("com.microsoft.azure.functions:azure-functions-java-library")

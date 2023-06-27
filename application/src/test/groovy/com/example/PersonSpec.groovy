@@ -1,10 +1,10 @@
 package com.example
 
+import jakarta.validation.Validator
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.validation.Validator
 
 class PersonSpec extends Specification {
 
