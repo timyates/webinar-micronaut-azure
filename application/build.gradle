@@ -1,18 +1,19 @@
 plugins {
     id("groovy")
     id("com.microsoft.azure.azurefunctions") version "1.12.1"
-    id("io.micronaut.application") version "3.7.10"
+    id("io.micronaut.application") version "4.0.0-M6"
 }
 
 version = "0.1"
 group = "com.example"
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut.validation:micronaut-validation")
     implementation("io.micronaut:micronaut-jackson-databind")
     implementation("jakarta.annotation:jakarta.annotation-api")
     implementation("io.micronaut.azure:micronaut-azure-function-http")
@@ -23,6 +24,15 @@ dependencies {
     implementation("com.microsoft.azure.functions:azure-functions-java-library")
     implementation("io.micronaut.azure:micronaut-azure-function")
     testImplementation("io.micronaut.azure:micronaut-azure-function-http-test")
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'io.micronaut.azure') {
+            details.useVersion '5.0.0-SNAPSHOT'
+            details.because 'testing'
+        }
+    }
 }
 
 application {

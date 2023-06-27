@@ -3,8 +3,8 @@ package com.example;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
+import jakarta.validation.Valid;
 
-import javax.validation.Valid;
 
 @Controller("/person")
 public class PersonController {
